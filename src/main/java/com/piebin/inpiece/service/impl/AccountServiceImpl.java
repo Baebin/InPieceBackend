@@ -3,10 +3,7 @@ package com.piebin.inpiece.service.impl;
 import com.piebin.inpiece.exception.AccountException;
 import com.piebin.inpiece.exception.entity.AccountErrorCode;
 import com.piebin.inpiece.model.domain.Account;
-import com.piebin.inpiece.model.dto.account.AccountDetailDto;
-import com.piebin.inpiece.model.dto.account.AccountLoginDto;
-import com.piebin.inpiece.model.dto.account.AccountRegisterDto;
-import com.piebin.inpiece.model.dto.account.AccountTokenDetailDto;
+import com.piebin.inpiece.model.dto.account.*;
 import com.piebin.inpiece.repository.AccountRepository;
 import com.piebin.inpiece.security.SecurityAccount;
 import com.piebin.inpiece.security.TokenProvider;
@@ -24,12 +21,7 @@ public class AccountServiceImpl implements AccountService {
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
 
-    @Override
-    @Transactional(readOnly = true)
-    public AccountDetailDto loadProfile(SecurityAccount securityAccount) {
-        return AccountDetailDto.toDto(securityAccount.getAccount());
-    }
-
+    // Utility
     @Override
     @Transactional
     public void register(AccountRegisterDto dto) {
@@ -54,5 +46,45 @@ public class AccountServiceImpl implements AccountService {
         return AccountTokenDetailDto.builder()
                 .token(token)
                 .build();
+    }
+
+    // Getter
+    @Override
+    @Transactional(readOnly = true)
+    public AccountDetailDto loadProfile(SecurityAccount securityAccount) {
+        return AccountDetailDto.toDto(securityAccount.getAccount());
+    }
+
+    // Setter
+    @Override
+    @Transactional
+    public void editName(SecurityAccount securityAccount, AccountNameDto dto) {
+        Account account = accountRepository.findByIdx(securityAccount.getAccount().getIdx())
+                .orElseThrow(() -> new AccountException(AccountErrorCode.NOT_FOUND));
+        account.setName(dto.getName());
+    }
+
+    @Override
+    @Transactional
+    public void editDescription(SecurityAccount securityAccount, AccountDescriptionDto dto) {
+        Account account = accountRepository.findByIdx(securityAccount.getAccount().getIdx())
+                .orElseThrow(() -> new AccountException(AccountErrorCode.NOT_FOUND));
+        account.setDescription(dto.getDescription());
+    }
+
+    @Override
+    @Transactional
+    public void editMajor(SecurityAccount securityAccount, AccountMajorDto dto) {
+        Account account = accountRepository.findByIdx(securityAccount.getAccount().getIdx())
+                .orElseThrow(() -> new AccountException(AccountErrorCode.NOT_FOUND));
+        account.setMajor(dto.getMajor());
+    }
+
+    @Override
+    @Transactional
+    public void editStudentId(SecurityAccount securityAccount, AccountStudentIdDto dto) {
+        Account account = accountRepository.findByIdx(securityAccount.getAccount().getIdx())
+                .orElseThrow(() -> new AccountException(AccountErrorCode.NOT_FOUND));
+        account.setStudentId(dto.getStudentId());
     }
 }

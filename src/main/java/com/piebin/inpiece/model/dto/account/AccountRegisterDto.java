@@ -11,10 +11,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AccountRegisterDto {
-    @NotBlank
+    @NotBlank(message = "아이디를 입력해주세요.")
     private String id;
-    @NotBlank
+    @NotBlank(message = "닉네임을 입력해주세요.")
     private String name;
-    @NotBlank
+    @NotBlank(message = "비밀번호를 입력해주세요.")
     private String password;
 }

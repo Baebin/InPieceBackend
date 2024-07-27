@@ -8,7 +8,10 @@ import com.piebin.inpiece.exception.entity.PermissionErrorCode;
 import com.piebin.inpiece.exception.entity.SystemErrorCode;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -43,5 +46,16 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleSystemException(SystemException e) {
         ErrorDto response = new ErrorDto(e.getErrorCode());
         return new ResponseEntity<>(response, response.getHttpStatus());
+    }
+
+    // Etc
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        BindingResult result = e.getBindingResult();
+        ErrorDto response = ErrorDto.builder()
+                .message(result.getAllErrors().get(0).getDefaultMessage())
+                .httpStatus(HttpStatus.BAD_REQUEST)
+                .build();
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 }

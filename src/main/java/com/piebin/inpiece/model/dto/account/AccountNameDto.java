@@ -10,9 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AccountLoginDto {
-    @NotBlank(message = "아이디을 입력해주세요.")
-    private String id;
-    @NotBlank(message = "비밀번호을 입력해주세요.")
-    private String password;
+public class AccountNameDto {
+    @NotBlank(message = "닉네임을 입력해주세요.")
+    private String name;
 }

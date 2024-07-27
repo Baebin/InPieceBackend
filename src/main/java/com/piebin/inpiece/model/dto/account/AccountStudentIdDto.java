@@ -1,5 +1,6 @@
 package com.piebin.inpiece.model.dto.account;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,9 +11,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AccountLoginDto {
-    @NotBlank(message = "아이디을 입력해주세요.")
-    private String id;
-    @NotBlank(message = "비밀번호을 입력해주세요.")
-    private String password;
+public class AccountStudentIdDto {
+    @NotBlank(message = "학번을 입력해주세요.")
+    @JsonProperty("student_id")
+    private String studentId;
 }
