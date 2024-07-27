@@ -23,6 +23,7 @@ import java.util.Arrays;
 @EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfig {
     private final TokenProvider tokenProvider;
+    private final OAuth2SuccessHandler oAuth2SuccessHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -55,7 +56,15 @@ public class SecurityConfig {
                 .and()
 
                 .addFilterBefore(new SecurityFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling();
+                .exceptionHandling()
+
+                .and()
+
+                .oauth2Login((auth) -> auth.loginPage("/oauth2/authorization/google")
+                        .successHandler(oAuth2SuccessHandler)
+                        .failureUrl("/oauth2/authorization/google")
+                        .permitAll())
+        ;
         return httpSecurity.build();
     }
 

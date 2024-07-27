@@ -19,12 +19,32 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;
 
+    // Authorization
     @Column(unique = true)
     private String id;
 
+    private String password;
+
+    // Google OAuth
+    @Column(name = "provider")
+    private String provider;
+
+    @Column(name = "provider_id")
+    private String providerId;
+
+    // Etc
     private String name;
 
-    private String password;
+    private String phone;
+
+    private String email;
+
+    private String major;
+
+    @Column(name = "student_id")
+    private String studentId;
+
+    private String description;
 
     @CreatedDate
     @Column(name = "reg_date")
