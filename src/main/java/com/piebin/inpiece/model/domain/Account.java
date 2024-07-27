@@ -25,13 +25,6 @@ public class Account {
 
     private String password;
 
-    // Google OAuth
-    @Column(name = "provider")
-    private String provider;
-
-    @Column(name = "provider_id")
-    private String providerId;
-
     // Etc
     private String name;
 
@@ -39,13 +32,22 @@ public class Account {
 
     private String email;
 
+    private String description;
+
+    // University
     private String major;
 
     @Column(name = "student_id")
     private String studentId;
 
-    private String description;
+    // OAuth2
+    @Column(name = "provider")
+    private String provider;
 
+    @Column(name = "provider_id")
+    private String providerId;
+
+    // Etc
     @CreatedDate
     @Column(name = "reg_date")
     private LocalDateTime regDate;

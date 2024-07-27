@@ -22,18 +22,20 @@ public class AccountController {
 
     private final AccountService accountService;
 
+    // Getter
+    @PostMapping(API + "load/profile")
+    public ResponseEntity<AccountDetailDto> loadProfile(
+            @AuthenticationPrincipal SecurityAccount securityAccount) {
+        return new ResponseEntity<>(
+                accountService.loadProfile(securityAccount), HttpStatus.OK);
+    }
+
+    // Utility
     @PostMapping(API + "register")
     public ResponseEntity<Boolean> register(
             @RequestBody @Valid AccountRegisterDto dto) {
         accountService.register(dto);
         return ResponseEntity.ok(true);
-    }
-
-    @PostMapping(API + "get")
-    public ResponseEntity<AccountDetailDto> getAccount(
-            @AuthenticationPrincipal SecurityAccount securityAccount) {
-        return new ResponseEntity<>(
-                accountService.getAccount(securityAccount), HttpStatus.OK);
     }
 
     @PostMapping(API + "login")

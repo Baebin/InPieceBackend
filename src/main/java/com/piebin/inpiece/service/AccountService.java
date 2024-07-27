@@ -7,7 +7,7 @@ import com.piebin.inpiece.model.dto.account.AccountTokenDetailDto;
 import com.piebin.inpiece.security.SecurityAccount;
 
 public interface AccountService {
-    AccountDetailDto getAccount(SecurityAccount securityAccount);
+    AccountDetailDto loadProfile(SecurityAccount securityAccount);
 
     void register(AccountRegisterDto dto);
 

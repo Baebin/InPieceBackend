@@ -26,7 +26,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     @Transactional(readOnly = true)
-    public AccountDetailDto getAccount(SecurityAccount securityAccount) {
+    public AccountDetailDto loadProfile(SecurityAccount securityAccount) {
         return AccountDetailDto.toDto(securityAccount.getAccount());
     }
 
