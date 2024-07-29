@@ -1,9 +1,6 @@
 package com.piebin.inpiece.exception.handler;
 
-import com.piebin.inpiece.exception.AccountException;
-import com.piebin.inpiece.exception.FileException;
-import com.piebin.inpiece.exception.PermissionException;
-import com.piebin.inpiece.exception.SystemException;
+import com.piebin.inpiece.exception.*;
 import com.piebin.inpiece.exception.dto.ErrorDto;
 import com.piebin.inpiece.exception.entity.PermissionErrorCode;
 import com.piebin.inpiece.exception.entity.SystemErrorCode;
@@ -21,6 +18,15 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
     @ExceptionHandler(AccountException.class)
     public ResponseEntity<?> handleAccountException(AccountException e) {
+        ErrorDto response = ErrorDto.builder()
+                .httpStatus(e.getErrorCode().getHttpStatus())
+                .message(e.getMessage())
+                .build();
+        return new ResponseEntity<>(response, response.getHttpStatus());
+    }
+
+    @ExceptionHandler(TeamException.class)
+    public ResponseEntity<?> handleTeamException(TeamException e) {
         ErrorDto response = ErrorDto.builder()
                 .httpStatus(e.getErrorCode().getHttpStatus())
                 .message(e.getMessage())
