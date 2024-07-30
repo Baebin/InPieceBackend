@@ -15,11 +15,18 @@ import java.io.IOException;
 @Component
 @RequiredArgsConstructor
 public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+    private static final String REDIRECT_URI = "http://localhost:5173/";
+
     private final TokenProvider tokenProvider;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
         SecurityOAuth2User user = (SecurityOAuth2User) authentication.getPrincipal();
+        if (!user.getAccount().getEmail().endsWith("@inha.edu")) {
+            String uri = REDIRECT_URI + "login/failure";
+            getRedirectStrategy().sendRedirect(request, response, uri);
+            return;
+        }
 
         String id = user.getAccount().getId();
         log.info("id: {}, name: {}", id, user.getName());
@@ -27,9 +34,9 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String token = tokenProvider.createAccessToken(id);
         log.info("token: {}", token);
 
-        String url = UriComponentsBuilder.fromUriString("/index.html")
+        String uri = UriComponentsBuilder.fromUriString(REDIRECT_URI + "login/redirect")
                 .queryParam("token", token)
                 .build().toUriString();
-        getRedirectStrategy().sendRedirect(request, response, url);
+        getRedirectStrategy().sendRedirect(request, response, uri);
     }
 }
