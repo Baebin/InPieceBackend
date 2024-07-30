@@ -38,4 +38,10 @@ public class Contest {
     @CreatedDate
     @Column(name = "reg_date")
     private LocalDateTime regDate;
+
+    @Column(name = "start_date")
+    private LocalDateTime startDate;
+
+    @Column(name = "end_date")
+    private LocalDateTime endDate;
 }
