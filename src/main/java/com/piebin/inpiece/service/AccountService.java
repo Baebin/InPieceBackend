@@ -19,6 +19,7 @@ public interface AccountService {
     // Setter
     void editProfileImage(SecurityAccount securityAccount, MultipartFile file) throws IOException;
     void editName(SecurityAccount securityAccount, AccountNameDto dto);
+    void editPhone(SecurityAccount securityAccount, AccountPhoneDto dto);
     void editDescription(SecurityAccount securityAccount, AccountDescriptionDto dto);
     void editMajor(SecurityAccount securityAccount, AccountMajorDto dto);
     void editStudentId(SecurityAccount securityAccount, AccountStudentIdDto dto);

@@ -94,6 +94,14 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     @Transactional
+    public void editPhone(SecurityAccount securityAccount, AccountPhoneDto dto) {
+        Account account = accountRepository.findByIdx(securityAccount.getAccount().getIdx())
+                .orElseThrow(() -> new AccountException(AccountErrorCode.NOT_FOUND));
+        account.setPhone(dto.getPhone());
+    }
+
+    @Override
+    @Transactional
     public void editDescription(SecurityAccount securityAccount, AccountDescriptionDto dto) {
         Account account = accountRepository.findByIdx(securityAccount.getAccount().getIdx())
                 .orElseThrow(() -> new AccountException(AccountErrorCode.NOT_FOUND));
