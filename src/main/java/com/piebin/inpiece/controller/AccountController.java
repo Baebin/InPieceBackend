@@ -58,6 +58,14 @@ public class AccountController {
         return ResponseEntity.ok(true);
     }
 
+    @PatchMapping(API + "edit")
+    public ResponseEntity<Boolean> edit(
+            @AuthenticationPrincipal SecurityAccount securityAccount,
+            @RequestBody @Valid AccountEditDto dto) {
+        accountService.edit(securityAccount, dto);
+        return ResponseEntity.ok(true);
+    }
+
     @PatchMapping(API + "edit/name")
     public ResponseEntity<Boolean> editName(
             @AuthenticationPrincipal SecurityAccount securityAccount,
