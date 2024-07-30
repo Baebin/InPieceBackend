@@ -13,6 +13,7 @@ import com.piebin.inpiece.model.domain.TeamMember;
 import com.piebin.inpiece.model.dto.team.TeamCreateDto;
 import com.piebin.inpiece.model.dto.team.TeamIdxDto;
 import com.piebin.inpiece.model.dto.team.TeamMemberDto;
+import com.piebin.inpiece.model.dto.team_member.TeamMemberDetailDto;
 import com.piebin.inpiece.repository.AccountRepository;
 import com.piebin.inpiece.repository.ContestRepository;
 import com.piebin.inpiece.repository.TeamMemberRepository;
@@ -23,6 +24,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -33,6 +36,7 @@ public class TeamServiceImpl implements TeamService {
     private final TeamRepository teamRepository;
     private final TeamMemberRepository teamMemberRepository;
 
+    // Utility
     @Override
     @Transactional
     public void create(SecurityAccount securityAccount, TeamCreateDto dto) {
@@ -105,5 +109,17 @@ public class TeamServiceImpl implements TeamService {
             throw new TeamException(TeamErrorCode.IS_NON_MEMBER);
         TeamMember teamMember = optionalTeamMember.get();
         teamMemberRepository.delete(teamMember);
+    }
+
+    // Getter
+    @Override
+    @Transactional(readOnly = true)
+    public List<TeamMemberDetailDto> loadAll(SecurityAccount securityAccount) {
+        Account account = securityAccount.getAccount();
+
+        List<TeamMemberDetailDto> dtos = new ArrayList<>();
+        for (TeamMember teamMember : teamMemberRepository.findAllByAccountOrderByIdxDesc(account))
+            dtos.add(TeamMemberDetailDto.toDto(teamMember));
+        return dtos;
     }
 }
