@@ -1,8 +1,10 @@
 package com.piebin.inpiece.service.impl;
 
 import com.piebin.inpiece.exception.AccountException;
+import com.piebin.inpiece.exception.ContestException;
 import com.piebin.inpiece.exception.TeamException;
 import com.piebin.inpiece.exception.entity.AccountErrorCode;
+import com.piebin.inpiece.exception.entity.ContestErrorCode;
 import com.piebin.inpiece.exception.entity.TeamErrorCode;
 import com.piebin.inpiece.model.domain.Account;
 import com.piebin.inpiece.model.domain.Contest;
@@ -35,10 +37,13 @@ public class TeamServiceImpl implements TeamService {
     @Transactional
     public void create(SecurityAccount securityAccount, TeamCreateDto dto) {
         Account account = securityAccount.getAccount();
-        Optional<Contest> optionalContest = contestRepository.findByIdx(dto.getContestIdx());
+        Contest contest = contestRepository.findByIdx(dto.getContestIdx())
+                .orElseThrow(() -> new ContestException(ContestErrorCode.NOT_FOUND));
+        if (teamMemberRepository.existsByTeam_ContestAndAccount(contest, account))
+            throw new TeamException(TeamErrorCode.EXISTS);
         Team team = Team.builder()
                 .name(dto.getName())
-                .contest(optionalContest.isPresent() ? optionalContest.get() : null)
+                .contest(contest)
                 .owner(account)
                 .build();
         teamRepository.save(team);
