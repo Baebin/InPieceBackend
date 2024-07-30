@@ -2,6 +2,7 @@ package com.piebin.inpiece.controller;
 
 import com.piebin.inpiece.model.dto.account.AccountRegisterDto;
 import com.piebin.inpiece.model.dto.team.TeamCreateDto;
+import com.piebin.inpiece.model.dto.team.TeamIdxDto;
 import com.piebin.inpiece.model.dto.team.TeamMemberDto;
 import com.piebin.inpiece.security.SecurityAccount;
 import com.piebin.inpiece.service.TeamService;
@@ -27,6 +28,14 @@ public class TeamController {
             @AuthenticationPrincipal SecurityAccount securityAccount,
             @RequestBody @Valid TeamCreateDto dto) {
         teamService.create(securityAccount, dto);
+        return ResponseEntity.ok(true);
+    }
+
+    @DeleteMapping(API + "delete")
+    public ResponseEntity<Boolean> create(
+            @AuthenticationPrincipal SecurityAccount securityAccount,
+            @RequestBody @Valid TeamIdxDto dto) {
+        teamService.delete(securityAccount, dto);
         return ResponseEntity.ok(true);
     }
 

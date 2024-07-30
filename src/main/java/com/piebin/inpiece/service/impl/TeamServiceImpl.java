@@ -8,6 +8,7 @@ import com.piebin.inpiece.model.domain.Account;
 import com.piebin.inpiece.model.domain.Team;
 import com.piebin.inpiece.model.domain.TeamMember;
 import com.piebin.inpiece.model.dto.team.TeamCreateDto;
+import com.piebin.inpiece.model.dto.team.TeamIdxDto;
 import com.piebin.inpiece.model.dto.team.TeamMemberDto;
 import com.piebin.inpiece.repository.AccountRepository;
 import com.piebin.inpiece.repository.TeamMemberRepository;
@@ -44,6 +45,17 @@ public class TeamServiceImpl implements TeamService {
                 .account(account)
                 .build();
         teamMemberRepository.save(teamMember);
+    }
+
+    @Override
+    @Transactional
+    public void delete(SecurityAccount securityAccount, TeamIdxDto dto) {
+        Account account = securityAccount.getAccount();
+        Team team = teamRepository.findByIdx(dto.getIdx())
+                .orElseThrow(() -> new TeamException(TeamErrorCode.NOT_FOUND));
+        if (!team.isOwner(account))
+            throw new TeamException(TeamErrorCode.IS_NON_OWNER);
+        teamRepository.delete(team);
     }
 
     @Override
