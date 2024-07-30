@@ -8,6 +8,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Getter
@@ -46,5 +47,12 @@ public class Team {
             if (member.getAccount().getIdx().equals(account.getIdx()))
                 return true;
         return false;
+    }
+
+    public Optional<TeamMember> getMember(Account account) {
+        for (TeamMember member : members)
+            if (member.getAccount().getIdx().equals(account.getIdx()))
+                return Optional.of(member);
+        return Optional.empty();
     }
 }

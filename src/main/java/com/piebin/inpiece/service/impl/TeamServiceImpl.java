@@ -18,6 +18,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class TeamServiceImpl implements TeamService {
@@ -78,8 +80,10 @@ public class TeamServiceImpl implements TeamService {
             if (!team.isOwner(account))
                 throw new TeamException(TeamErrorCode.IS_NON_OWNER);
         }
-        if (!team.isMember(eAccount))
+        Optional<TeamMember> optionalTeamMember = team.getMember(eAccount);
+        if (optionalTeamMember.isEmpty())
             throw new TeamException(TeamErrorCode.IS_NON_MEMBER);
-        teamMemberRepository.deleteByTeamAndAccount(team, eAccount);
+        TeamMember teamMember = optionalTeamMember.get();
+        teamMemberRepository.delete(teamMember);
     }
 }
