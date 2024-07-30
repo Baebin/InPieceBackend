@@ -1,6 +1,5 @@
 package com.piebin.inpiece.controller;
 
-import com.piebin.inpiece.model.dto.account.AccountRegisterDto;
 import com.piebin.inpiece.model.dto.team.TeamCreateDto;
 import com.piebin.inpiece.model.dto.team.TeamIdxDto;
 import com.piebin.inpiece.model.dto.team.TeamMemberDto;
