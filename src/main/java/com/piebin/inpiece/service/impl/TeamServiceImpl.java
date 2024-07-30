@@ -5,12 +5,14 @@ import com.piebin.inpiece.exception.TeamException;
 import com.piebin.inpiece.exception.entity.AccountErrorCode;
 import com.piebin.inpiece.exception.entity.TeamErrorCode;
 import com.piebin.inpiece.model.domain.Account;
+import com.piebin.inpiece.model.domain.Contest;
 import com.piebin.inpiece.model.domain.Team;
 import com.piebin.inpiece.model.domain.TeamMember;
 import com.piebin.inpiece.model.dto.team.TeamCreateDto;
 import com.piebin.inpiece.model.dto.team.TeamIdxDto;
 import com.piebin.inpiece.model.dto.team.TeamMemberDto;
 import com.piebin.inpiece.repository.AccountRepository;
+import com.piebin.inpiece.repository.ContestRepository;
 import com.piebin.inpiece.repository.TeamMemberRepository;
 import com.piebin.inpiece.repository.TeamRepository;
 import com.piebin.inpiece.security.SecurityAccount;
@@ -25,6 +27,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class TeamServiceImpl implements TeamService {
     private final AccountRepository accountRepository;
+    private final ContestRepository contestRepository;
     private final TeamRepository teamRepository;
     private final TeamMemberRepository teamMemberRepository;
 
@@ -32,10 +35,10 @@ public class TeamServiceImpl implements TeamService {
     @Transactional
     public void create(SecurityAccount securityAccount, TeamCreateDto dto) {
         Account account = securityAccount.getAccount();
-
+        Optional<Contest> optionalContest = contestRepository.findByIdx(dto.getContestIdx());
         Team team = Team.builder()
                 .name(dto.getName())
-                .contest(dto.getContest())
+                .contest(optionalContest.isPresent() ? optionalContest.get() : null)
                 .owner(account)
                 .build();
         teamRepository.save(team);

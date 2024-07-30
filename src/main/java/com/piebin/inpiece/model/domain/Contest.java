@@ -28,6 +28,9 @@ public class Contest {
     @ManyToOne
     private Account owner;
 
+    @OneToMany(mappedBy = "contest", cascade = CascadeType.REMOVE)
+    private List<Team> teams = new ArrayList<>();
+
     @Column(name = "rec_count")
     @OneToMany(mappedBy = "contest", cascade = CascadeType.REMOVE)
     private List<ContestRecCount> recCounts = new ArrayList<>();

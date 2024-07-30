@@ -25,7 +25,8 @@ public class Team {
 
     private String name;
 
-    private String contest;
+    @ManyToOne
+    private Contest contest;
 
     @ManyToOne
     private Account owner;
