@@ -1,6 +1,5 @@
 package com.piebin.inpiece.model.domain;
 
-
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -19,4 +18,7 @@ public class ContestRecCount {
 
     @ManyToOne
     private Contest contest;
+
+    @ManyToOne
+    private Account account;
 }

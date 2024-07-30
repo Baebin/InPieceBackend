@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 public class ContestController {
@@ -37,6 +39,20 @@ public class ContestController {
             @AuthenticationPrincipal SecurityAccount securityAccount,
             @RequestBody @Valid ContestIdxDto dto) {
         return new ResponseEntity<>(
-                contestService.loadDetail(securityAccount, dto), HttpStatus.OK);
+                contestService.load(securityAccount, dto), HttpStatus.OK);
+    }
+
+    @GetMapping(API + "load/all/my")
+    public ResponseEntity<List<ContestDetailDto>> loadAllMyContest(
+            @AuthenticationPrincipal SecurityAccount securityAccount) {
+        return new ResponseEntity<>(
+                contestService.loadAllMyContest(securityAccount), HttpStatus.OK);
+    }
+
+    @GetMapping(API + "load/all/rec_count")
+    public ResponseEntity<List<ContestDetailDto>> loadAllWithMyRecCount(
+            @AuthenticationPrincipal SecurityAccount securityAccount) {
+        return new ResponseEntity<>(
+                contestService.loadAllWithMyRecCount(securityAccount), HttpStatus.OK);
     }
 }
