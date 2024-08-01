@@ -2,6 +2,7 @@ package com.piebin.inpiece.model.dto.contest;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.piebin.inpiece.model.domain.Account;
 import com.piebin.inpiece.model.domain.Contest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,6 +24,7 @@ public class ContestDetailDto {
     @JsonProperty("owner_name")
     private String ownerName;
 
+    private Boolean recommend;
     @JsonProperty("rec_count")
     private Long recCount;
 
@@ -36,7 +38,7 @@ public class ContestDetailDto {
     @JsonProperty("end_date")
     private LocalDateTime endDate;
 
-    public static ContestDetailDto toDto(Contest contest) {
+    public static ContestDetailDto toDto(Account account, Contest contest) {
         return ContestDetailDto.builder()
                 .name(contest.getName())
                 .description(contest.getDescription())
@@ -44,7 +46,8 @@ public class ContestDetailDto {
 
                 .ownerName(contest.getOwner().getName())
 
-                .recCount((long) contest.getRecCounts().size())
+                .recommend(account != null ? contest.getRecommend(account).isPresent() : false)
+                .recCount((long) contest.getRecommends().size())
 
                 .regDate(contest.getRegDate())
                 .startDate(contest.getStartDate())

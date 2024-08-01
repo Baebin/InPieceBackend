@@ -8,6 +8,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Getter
@@ -37,7 +38,7 @@ public class Contest {
 
     @Column(name = "rec_count")
     @OneToMany(mappedBy = "contest", cascade = CascadeType.REMOVE)
-    private List<ContestRecCount> recCounts = new ArrayList<>();
+    private List<ContestRecommend> recommends = new ArrayList<>();
 
     @CreatedDate
     @Column(name = "reg_date")
@@ -48,4 +49,11 @@ public class Contest {
 
     @Column(name = "end_date")
     private LocalDateTime endDate;
+
+    public Optional<ContestRecommend> getRecommend(Account account) {
+        for (ContestRecommend recommend : recommends)
+            if (recommend.getAccount().getIdx().equals(account.getIdx()))
+                return Optional.of(recommend);
+        return Optional.empty();
+    }
 }
