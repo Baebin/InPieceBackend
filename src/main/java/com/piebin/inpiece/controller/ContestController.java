@@ -53,7 +53,7 @@ public class ContestController {
     public ResponseEntity<List<ContestDetailDto>> loadAll(
             @AuthenticationPrincipal SecurityAccount securityAccount,
             @RequestParam(value = "filter", defaultValue = "reg_date") String filter,
-            @RequestParam(value = "sort", defaultValue = "asc") String sort,
+            @RequestParam(value = "sort", defaultValue = "desc") String sort,
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "count", defaultValue = "12") int count) {
         return new ResponseEntity<>(
