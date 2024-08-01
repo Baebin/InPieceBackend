@@ -58,7 +58,7 @@ public class AccountController {
         return ResponseEntity.ok(true);
     }
 
-    @PatchMapping(API + "edit")
+    @PutMapping(API + "edit")
     public ResponseEntity<Boolean> edit(
             @AuthenticationPrincipal SecurityAccount securityAccount,
             @RequestBody @Valid AccountEditDto dto) {
