@@ -20,7 +20,6 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class ImageServiceImpl implements ImageService {
     public static final String DIRECTORY = "images";
