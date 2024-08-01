@@ -25,6 +25,10 @@ public class Contest {
 
     private String description;
 
+    @Builder.Default
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> tags = new ArrayList<>();
+
     @ManyToOne
     private Account owner;
 

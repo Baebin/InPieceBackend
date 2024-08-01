@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Builder
@@ -17,6 +18,7 @@ import java.time.LocalDateTime;
 public class ContestDetailDto {
     private String name;
     private String description;
+    private List<String> tags;
 
     @JsonProperty("owner_name")
     private String ownerName;
@@ -38,6 +40,7 @@ public class ContestDetailDto {
         return ContestDetailDto.builder()
                 .name(contest.getName())
                 .description(contest.getDescription())
+                .tags(contest.getTags())
 
                 .ownerName(contest.getOwner().getName())
 

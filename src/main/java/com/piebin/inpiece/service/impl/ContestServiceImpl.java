@@ -33,6 +33,7 @@ public class ContestServiceImpl implements ContestService {
         Contest contest = Contest.builder()
                 .name(dto.getName())
                 .description(dto.getDescription())
+                .tags(dto.getTags())
                 .owner(account)
                 .startDate(dto.getStartDate())
                 .endDate(dto.getEndDate())
