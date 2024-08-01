@@ -24,7 +24,7 @@ public class TeamMemberDetailDto {
         return TeamMemberDetailDto.builder()
                 .teamIdx(team.getIdx())
                 .teamName(team.getName())
-                .contestName(team.getContest().getName())
+                .contestName(team.getContest() != null ? team.getContest().getName() : null)
 
                 .role(teamMember.getRole())
                 .build();
