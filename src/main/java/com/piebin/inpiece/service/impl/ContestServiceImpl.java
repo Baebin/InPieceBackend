@@ -5,10 +5,7 @@ import com.piebin.inpiece.exception.PermissionException;
 import com.piebin.inpiece.exception.entity.ContestErrorCode;
 import com.piebin.inpiece.exception.entity.PermissionErrorCode;
 import com.piebin.inpiece.model.domain.*;
-import com.piebin.inpiece.model.dto.contest.ContestCreateDto;
-import com.piebin.inpiece.model.dto.contest.ContestDetailDto;
-import com.piebin.inpiece.model.dto.contest.ContestIdxDto;
-import com.piebin.inpiece.model.dto.contest.ContestRecommendDto;
+import com.piebin.inpiece.model.dto.contest.*;
 import com.piebin.inpiece.model.dto.image.ImageDetailDto;
 import com.piebin.inpiece.model.dto.image.ImageDto;
 import com.piebin.inpiece.model.dto.team_member.TeamDetailDto;
@@ -68,7 +65,6 @@ public class ContestServiceImpl implements ContestService {
         return ImageDetailDto.toResponseEntity(imageDetailDto);
     }
 
-
     @Override
     @Transactional(readOnly = true)
     public ContestDetailDto load(SecurityAccount securityAccount, ContestIdxDto dto) {
@@ -124,6 +120,22 @@ public class ContestServiceImpl implements ContestService {
     }
 
     // Setter
+    @Override
+    @Transactional
+    public void edit(SecurityAccount securityAccount, ContestEditDto dto) {
+        Account account = securityAccount.getAccount();
+        Contest contest = contestRepository.findByIdx(dto.getIdx())
+                .orElseThrow(() -> new ContestException(ContestErrorCode.NOT_FOUND));
+        if (!contest.getOwner().getIdx().equals(account.getIdx()))
+            throw new PermissionException(PermissionErrorCode.UNAUTHORIZED);
+
+        contest.setName(dto.getName());
+        contest.setDescription(dto.getDescription());
+        contest.setTags(dto.getTags());
+        contest.setStartDate(dto.getStartDate());
+        contest.setEndDate(dto.getEndDate());
+    }
+
     @Override
     @Transactional
     public void editImage(SecurityAccount securityAccount, MultipartFile file, ContestIdxDto dto) throws IOException {

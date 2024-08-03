@@ -1,9 +1,6 @@
 package com.piebin.inpiece.service;
 
-import com.piebin.inpiece.model.dto.contest.ContestCreateDto;
-import com.piebin.inpiece.model.dto.contest.ContestDetailDto;
-import com.piebin.inpiece.model.dto.contest.ContestIdxDto;
-import com.piebin.inpiece.model.dto.contest.ContestRecommendDto;
+import com.piebin.inpiece.model.dto.contest.*;
 import com.piebin.inpiece.model.dto.team_member.TeamDetailDto;
 import com.piebin.inpiece.security.SecurityAccount;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +14,7 @@ public interface ContestService {
     void create(SecurityAccount securityAccount, ContestCreateDto dto);
 
     // Setter
+    void edit(SecurityAccount securityAccount, ContestEditDto dto) throws IOException;
     void editImage(SecurityAccount securityAccount, MultipartFile file, ContestIdxDto dto) throws IOException;
     void editRecommend(SecurityAccount securityAccount, ContestRecommendDto dto);
 

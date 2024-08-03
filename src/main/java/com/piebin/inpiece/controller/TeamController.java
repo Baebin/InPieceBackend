@@ -71,6 +71,14 @@ public class TeamController {
         return ResponseEntity.ok(true);
     }
 
+    @PatchMapping(API + "edit/start_date")
+    public ResponseEntity<Boolean> editStartDate(
+            @AuthenticationPrincipal SecurityAccount securityAccount,
+            @RequestBody @Valid TeamNameDto dto) {
+        teamService.editName(securityAccount, dto);
+        return ResponseEntity.ok(true);
+    }
+
     // Contest
     @PostMapping(API + "add/contest")
     public ResponseEntity<Boolean> addContest(

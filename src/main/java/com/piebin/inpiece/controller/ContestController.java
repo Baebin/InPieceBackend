@@ -1,9 +1,6 @@
 package com.piebin.inpiece.controller;
 
-import com.piebin.inpiece.model.dto.contest.ContestCreateDto;
-import com.piebin.inpiece.model.dto.contest.ContestDetailDto;
-import com.piebin.inpiece.model.dto.contest.ContestIdxDto;
-import com.piebin.inpiece.model.dto.contest.ContestRecommendDto;
+import com.piebin.inpiece.model.dto.contest.*;
 import com.piebin.inpiece.model.dto.team_member.TeamDetailDto;
 import com.piebin.inpiece.security.SecurityAccount;
 import com.piebin.inpiece.service.ContestService;
@@ -77,6 +74,14 @@ public class ContestController {
     }
 
     // Setter
+    @PutMapping(API + "edit")
+    public ResponseEntity<Boolean> edit(
+            @AuthenticationPrincipal SecurityAccount securityAccount,
+            @RequestBody @Valid ContestEditDto dto) throws IOException {
+        contestService.edit(securityAccount, dto);
+        return ResponseEntity.ok(true);
+    }
+
     @PatchMapping(API + "edit/image")
     public ResponseEntity<Boolean> editProfileImage(
             @AuthenticationPrincipal SecurityAccount securityAccount,
