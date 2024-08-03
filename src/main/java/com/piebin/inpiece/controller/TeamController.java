@@ -1,5 +1,7 @@
 package com.piebin.inpiece.controller;
 
+import com.piebin.inpiece.model.dto.contest.ContestDetailDto;
+import com.piebin.inpiece.model.dto.team.TeamContestDto;
 import com.piebin.inpiece.model.dto.team.TeamCreateDto;
 import com.piebin.inpiece.model.dto.team.TeamIdxDto;
 import com.piebin.inpiece.model.dto.team.TeamMemberDto;
@@ -61,5 +63,30 @@ public class TeamController {
             @AuthenticationPrincipal SecurityAccount securityAccount) {
         return new ResponseEntity<>(
                 teamService.loadAll(securityAccount), HttpStatus.OK);
+    }
+
+    // Contest
+    @PostMapping(API + "add/contest")
+    public ResponseEntity<Boolean> addContest(
+            @AuthenticationPrincipal SecurityAccount securityAccount,
+            @RequestBody @Valid TeamContestDto dto) {
+        teamService.addContest(securityAccount, dto);
+        return ResponseEntity.ok(true);
+    }
+
+    @DeleteMapping(API + "remove/contest")
+    public ResponseEntity<Boolean> removeContest(
+            @AuthenticationPrincipal SecurityAccount securityAccount,
+            @RequestBody @Valid TeamContestDto dto) {
+        teamService.removeContest(securityAccount, dto);
+        return ResponseEntity.ok(true);
+    }
+
+    @GetMapping(API + "load/all/contest")
+    public ResponseEntity<List<ContestDetailDto>> loadAllContest(
+            @AuthenticationPrincipal SecurityAccount securityAccount,
+            @Valid TeamIdxDto dto) {
+        return new ResponseEntity<>(
+                teamService.loadAllContest(securityAccount, dto), HttpStatus.OK);
     }
 }

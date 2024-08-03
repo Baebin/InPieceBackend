@@ -4,6 +4,7 @@ import com.piebin.inpiece.model.dto.contest.ContestCreateDto;
 import com.piebin.inpiece.model.dto.contest.ContestDetailDto;
 import com.piebin.inpiece.model.dto.contest.ContestIdxDto;
 import com.piebin.inpiece.model.dto.contest.ContestRecommendDto;
+import com.piebin.inpiece.model.dto.team_member.TeamDetailDto;
 import com.piebin.inpiece.security.SecurityAccount;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,4 +26,5 @@ public interface ContestService {
     ContestDetailDto load(SecurityAccount securityAccount, ContestIdxDto dto);
     List<ContestDetailDto> loadAll(SecurityAccount securityAccount, String filter, String sort, int page, int count);
     List<ContestDetailDto> loadAllMyContest(SecurityAccount securityAccount);
+    List<TeamDetailDto> loadAllTeam(SecurityAccount securityAccount, ContestIdxDto dto);
 }

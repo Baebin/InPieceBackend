@@ -34,9 +34,8 @@ public class Contest {
     private Account owner;
 
     @OneToMany(mappedBy = "contest", cascade = CascadeType.REMOVE)
-    private List<Team> teams = new ArrayList<>();
+    private List<TeamContest> teamContests = new ArrayList<>();
 
-    @Column(name = "rec_count")
     @OneToMany(mappedBy = "contest", cascade = CascadeType.REMOVE)
     private List<ContestRecommend> recommends = new ArrayList<>();
 

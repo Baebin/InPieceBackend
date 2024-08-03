@@ -7,7 +7,8 @@ import org.springframework.http.HttpStatus;
 @Getter
 @AllArgsConstructor
 public enum ContestErrorCode {
-    NOT_FOUND(HttpStatus.BAD_REQUEST, "일치하는 대회 정보가 없습니다.");
+    NOT_FOUND(HttpStatus.BAD_REQUEST, "일치하는 대회 정보가 없습니다."),
+    EXISTS(HttpStatus.BAD_REQUEST, "이미 대회 정보가 존재합니다.");
 
     private final HttpStatus httpStatus;
     private final String message;

@@ -4,15 +4,14 @@ import com.piebin.inpiece.exception.ContestException;
 import com.piebin.inpiece.exception.PermissionException;
 import com.piebin.inpiece.exception.entity.ContestErrorCode;
 import com.piebin.inpiece.exception.entity.PermissionErrorCode;
-import com.piebin.inpiece.model.domain.Account;
-import com.piebin.inpiece.model.domain.Contest;
-import com.piebin.inpiece.model.domain.ContestRecommend;
+import com.piebin.inpiece.model.domain.*;
 import com.piebin.inpiece.model.dto.contest.ContestCreateDto;
 import com.piebin.inpiece.model.dto.contest.ContestDetailDto;
 import com.piebin.inpiece.model.dto.contest.ContestIdxDto;
 import com.piebin.inpiece.model.dto.contest.ContestRecommendDto;
 import com.piebin.inpiece.model.dto.image.ImageDetailDto;
 import com.piebin.inpiece.model.dto.image.ImageDto;
+import com.piebin.inpiece.model.dto.team_member.TeamDetailDto;
 import com.piebin.inpiece.model.entity.ContestFilter;
 import com.piebin.inpiece.model.entity.ContestSort;
 import com.piebin.inpiece.repository.ContestRecCountRepository;
@@ -110,6 +109,17 @@ public class ContestServiceImpl implements ContestService {
         List<ContestDetailDto> dtos = new ArrayList<>();
         for (Contest contest : contestRepository.findAllByOwnerOrderByIdxDesc(account))
             dtos.add(ContestDetailDto.toDto(account, contest));
+        return dtos;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<TeamDetailDto> loadAllTeam(SecurityAccount securityAccount, ContestIdxDto dto) {
+        Contest contest = contestRepository.findByIdx(dto.getIdx())
+                .orElseThrow(() -> new ContestException(ContestErrorCode.NOT_FOUND));
+        List<TeamDetailDto> dtos = new ArrayList<>();
+        for (TeamContest teamContest : contest.getTeamContests())
+            dtos.add(TeamDetailDto.toDto(teamContest.getTeam()));
         return dtos;
     }
 

@@ -14,8 +14,6 @@ public class TeamMemberDetailDto {
     private Long teamIdx;
     @JsonProperty("team_name")
     private String teamName;
-    @JsonProperty("contest_name")
-    private String contestName;
 
     private String role;
 
@@ -24,7 +22,6 @@ public class TeamMemberDetailDto {
         return TeamMemberDetailDto.builder()
                 .teamIdx(team.getIdx())
                 .teamName(team.getName())
-                .contestName(team.getContest() != null ? team.getContest().getName() : null)
 
                 .role(teamMember.getRole())
                 .build();

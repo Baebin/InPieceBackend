@@ -4,6 +4,7 @@ import com.piebin.inpiece.model.dto.contest.ContestCreateDto;
 import com.piebin.inpiece.model.dto.contest.ContestDetailDto;
 import com.piebin.inpiece.model.dto.contest.ContestIdxDto;
 import com.piebin.inpiece.model.dto.contest.ContestRecommendDto;
+import com.piebin.inpiece.model.dto.team_member.TeamDetailDto;
 import com.piebin.inpiece.security.SecurityAccount;
 import com.piebin.inpiece.service.ContestService;
 import jakarta.validation.Valid;
@@ -65,6 +66,14 @@ public class ContestController {
             @AuthenticationPrincipal SecurityAccount securityAccount) {
         return new ResponseEntity<>(
                 contestService.loadAllMyContest(securityAccount), HttpStatus.OK);
+    }
+
+    @GetMapping(API + "load/all/team")
+    public ResponseEntity<List<TeamDetailDto>> loadAllTeam(
+            @AuthenticationPrincipal SecurityAccount securityAccount,
+            @Valid ContestIdxDto dto) {
+        return new ResponseEntity<>(
+                contestService.loadAllTeam(securityAccount, dto), HttpStatus.OK);
     }
 
     // Setter

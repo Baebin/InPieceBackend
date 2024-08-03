@@ -26,10 +26,10 @@ public class Team {
     private String name;
 
     @ManyToOne
-    private Contest contest;
-
-    @ManyToOne
     private Account owner;
+
+    @OneToMany(mappedBy = "team", cascade = CascadeType.REMOVE)
+    private List<TeamContest> teamContests = new ArrayList<>();
 
     @OneToMany(mappedBy = "team", cascade = CascadeType.REMOVE)
     @Builder.Default
@@ -54,6 +54,20 @@ public class Team {
         for (TeamMember member : members)
             if (member.getAccount().getIdx().equals(account.getIdx()))
                 return Optional.of(member);
+        return Optional.empty();
+    }
+
+    public boolean containsContest(Contest contest) {
+        for (TeamContest teamContest : teamContests)
+            if (teamContest.getContest().getIdx().equals(contest.getIdx()))
+                return true;
+        return false;
+    }
+
+    public Optional<TeamContest> getTeamContest(Contest contest) {
+        for (TeamContest teamContest : teamContests)
+            if (teamContest.getContest().getIdx().equals(contest.getIdx()))
+                return Optional.of(teamContest);
         return Optional.empty();
     }
 }
