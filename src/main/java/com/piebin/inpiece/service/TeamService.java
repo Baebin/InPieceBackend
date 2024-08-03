@@ -2,10 +2,7 @@ package com.piebin.inpiece.service;
 
 import com.piebin.inpiece.model.dto.contest.ContestDetailDto;
 import com.piebin.inpiece.model.dto.contest.ContestIdxDto;
-import com.piebin.inpiece.model.dto.team.TeamContestDto;
-import com.piebin.inpiece.model.dto.team.TeamCreateDto;
-import com.piebin.inpiece.model.dto.team.TeamIdxDto;
-import com.piebin.inpiece.model.dto.team.TeamMemberDto;
+import com.piebin.inpiece.model.dto.team.*;
 import com.piebin.inpiece.model.dto.team_member.TeamMemberDetailDto;
 import com.piebin.inpiece.security.SecurityAccount;
 
@@ -19,7 +16,10 @@ public interface TeamService {
     void remove(SecurityAccount securityAccount, TeamMemberDto dto);
 
     // Getter
-    List<TeamMemberDetailDto> loadAll(SecurityAccount securityAccount);
+    List<TeamMemberDetailDto> loadAllMyTeam(SecurityAccount securityAccount);
+
+    // Setter
+    void editName(SecurityAccount securityAccount, TeamNameDto dto);
 
     // Contest
     void addContest(SecurityAccount securityAccount, TeamContestDto dto);

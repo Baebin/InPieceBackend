@@ -1,10 +1,7 @@
 package com.piebin.inpiece.controller;
 
 import com.piebin.inpiece.model.dto.contest.ContestDetailDto;
-import com.piebin.inpiece.model.dto.team.TeamContestDto;
-import com.piebin.inpiece.model.dto.team.TeamCreateDto;
-import com.piebin.inpiece.model.dto.team.TeamIdxDto;
-import com.piebin.inpiece.model.dto.team.TeamMemberDto;
+import com.piebin.inpiece.model.dto.team.*;
 import com.piebin.inpiece.model.dto.team_member.TeamMemberDetailDto;
 import com.piebin.inpiece.security.SecurityAccount;
 import com.piebin.inpiece.service.TeamService;
@@ -58,11 +55,20 @@ public class TeamController {
     }
 
     // Getter
-    @GetMapping(API + "load/all")
-    public ResponseEntity<List<TeamMemberDetailDto>> loadAll(
+    @GetMapping(API + "load/all/my")
+    public ResponseEntity<List<TeamMemberDetailDto>> loadAllMyTeam(
             @AuthenticationPrincipal SecurityAccount securityAccount) {
         return new ResponseEntity<>(
-                teamService.loadAll(securityAccount), HttpStatus.OK);
+                teamService.loadAllMyTeam(securityAccount), HttpStatus.OK);
+    }
+
+    // Setter
+    @PatchMapping(API + "edit/name")
+    public ResponseEntity<Boolean> editName(
+            @AuthenticationPrincipal SecurityAccount securityAccount,
+            @RequestBody @Valid TeamNameDto dto) {
+        teamService.editName(securityAccount, dto);
+        return ResponseEntity.ok(true);
     }
 
     // Contest

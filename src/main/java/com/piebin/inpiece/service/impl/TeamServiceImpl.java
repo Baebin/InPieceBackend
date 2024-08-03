@@ -8,10 +8,7 @@ import com.piebin.inpiece.exception.entity.ContestErrorCode;
 import com.piebin.inpiece.exception.entity.TeamErrorCode;
 import com.piebin.inpiece.model.domain.*;
 import com.piebin.inpiece.model.dto.contest.ContestDetailDto;
-import com.piebin.inpiece.model.dto.team.TeamContestDto;
-import com.piebin.inpiece.model.dto.team.TeamCreateDto;
-import com.piebin.inpiece.model.dto.team.TeamIdxDto;
-import com.piebin.inpiece.model.dto.team.TeamMemberDto;
+import com.piebin.inpiece.model.dto.team.*;
 import com.piebin.inpiece.model.dto.team_member.TeamMemberDetailDto;
 import com.piebin.inpiece.repository.*;
 import com.piebin.inpiece.security.SecurityAccount;
@@ -106,13 +103,25 @@ public class TeamServiceImpl implements TeamService {
     // Getter
     @Override
     @Transactional(readOnly = true)
-    public List<TeamMemberDetailDto> loadAll(SecurityAccount securityAccount) {
+    public List<TeamMemberDetailDto> loadAllMyTeam(SecurityAccount securityAccount) {
         Account account = securityAccount.getAccount();
 
         List<TeamMemberDetailDto> dtos = new ArrayList<>();
         for (TeamMember teamMember : teamMemberRepository.findAllByAccountOrderByIdxDesc(account))
             dtos.add(TeamMemberDetailDto.toDto(teamMember));
         return dtos;
+    }
+
+    // Setter
+    @Override
+    @Transactional
+    public void editName(SecurityAccount securityAccount, TeamNameDto dto) {
+        Account account = securityAccount.getAccount();
+        Team team = teamRepository.findByIdx(dto.getIdx())
+                .orElseThrow(() -> new TeamException(TeamErrorCode.NOT_FOUND));
+        if (!team.isOwner(account))
+            throw new TeamException(TeamErrorCode.IS_NON_OWNER);
+        team.setName(dto.getName());
     }
 
     // Contest
