@@ -1,9 +1,11 @@
 package com.piebin.inpiece.security;
 
 import io.jsonwebtoken.*;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,13 +20,14 @@ import java.util.*;
 @RequiredArgsConstructor
 public class TokenProvider implements InitializingBean {
     public static final String AUTHORIZATION_HEADER = "Authorization";
+    public static final String AUTHORIZATION_HEADER_COOKIE = "Authorization";
 
     private final SecurityAccountService securityAccountService;
 
     @Value("${spring.security.key.token.secret}")
     private String secretKey;
 
-    private final long tokenValidityInMilliseconds = 60 * 60 * 1000L;
+    private final long tokenValidityInMilliseconds = 7 * 24 * 60 * 60 * 1000L;
 
     @Override
     public void afterPropertiesSet() {
@@ -58,6 +61,15 @@ public class TokenProvider implements InitializingBean {
     }
 
     public String resolveToken(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        if (!ObjectUtils.isEmpty(cookies)) {
+            Optional<String> token = Arrays.stream(cookies)
+                    .filter((cookie -> cookie.getName().equals(AUTHORIZATION_HEADER) || cookie.getName().equals(AUTHORIZATION_HEADER_COOKIE)))
+                    .map((cookie -> cookie.getValue()))
+                    .findFirst();
+            if (token.isPresent())
+                return token.get();
+        }
         return request.getHeader(AUTHORIZATION_HEADER);
     }
 
