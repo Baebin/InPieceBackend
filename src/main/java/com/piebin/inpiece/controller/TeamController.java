@@ -105,6 +105,14 @@ public class TeamController {
                 teamService.loadRecruit(securityAccount, dto), HttpStatus.OK);
     }
 
+    @GetMapping(API + "load/all/recruit")
+    public ResponseEntity<List<TeamRecruitDetailDto>> loadAllRecruit(
+            @AuthenticationPrincipal SecurityAccount securityAccount,
+            @Valid TeamIdxDto dto) {
+        return new ResponseEntity<>(
+                teamService.loadAllRecruit(securityAccount, dto), HttpStatus.OK);
+    }
+
     @PostMapping(API + "update/recruit")
     public ResponseEntity<Boolean> updateRecruit(
             @AuthenticationPrincipal SecurityAccount securityAccount,

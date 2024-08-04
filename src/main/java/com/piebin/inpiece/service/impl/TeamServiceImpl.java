@@ -184,7 +184,6 @@ public class TeamServiceImpl implements TeamService {
     @Override
     @Transactional(readOnly = true)
     public TeamRecruitDetailDto loadRecruit(SecurityAccount securityAccount, TeamRecruitDto dto) {
-        Account account = securityAccount.getAccount();
         Team team = teamRepository.findByIdx(dto.getTeamIdx())
                 .orElseThrow(() -> new TeamException(TeamErrorCode.NOT_FOUND));
         Contest contest = contestRepository.findByIdx(dto.getContestIdx())
@@ -192,6 +191,17 @@ public class TeamServiceImpl implements TeamService {
         TeamRecruit teamRecruit = team.getTeamRecruit(contest)
                 .orElseThrow(() -> new SystemException(SystemErrorCode.DATA_NOT_FOUND));
         return TeamRecruitDetailDto.toDto(teamRecruit);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<TeamRecruitDetailDto> loadAllRecruit(SecurityAccount securityAccount, TeamIdxDto dto) {
+        Team team = teamRepository.findByIdx(dto.getIdx())
+                .orElseThrow(() -> new TeamException(TeamErrorCode.NOT_FOUND));
+        List<TeamRecruitDetailDto> dtos = new ArrayList<>();
+        for (TeamRecruit teamRecruit : team.getTeamRecruits())
+            dtos.add(TeamRecruitDetailDto.toDto(teamRecruit));
+        return dtos;
     }
 
     @Override

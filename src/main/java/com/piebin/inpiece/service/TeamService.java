@@ -28,5 +28,6 @@ public interface TeamService {
 
     // Recruit
     TeamRecruitDetailDto loadRecruit(SecurityAccount securityAccount, TeamRecruitDto dto);
+    List<TeamRecruitDetailDto> loadAllRecruit(SecurityAccount securityAccount, TeamIdxDto dto);
     void updateRecruit(SecurityAccount securityAccount, TeamRecruitEditDto dto);
 }

@@ -1,6 +1,7 @@
 package com.piebin.inpiece.controller;
 
 import com.piebin.inpiece.model.dto.contest.*;
+import com.piebin.inpiece.model.dto.team.TeamRecruitDetailDto;
 import com.piebin.inpiece.model.dto.team_member.TeamDetailDto;
 import com.piebin.inpiece.security.SecurityAccount;
 import com.piebin.inpiece.service.ContestService;
@@ -71,6 +72,14 @@ public class ContestController {
             @Valid ContestIdxDto dto) {
         return new ResponseEntity<>(
                 contestService.loadAllTeam(securityAccount, dto), HttpStatus.OK);
+    }
+
+    @GetMapping(API + "load/all/recruit")
+    public ResponseEntity<List<TeamRecruitDetailDto>> loadAllRecruit(
+            @AuthenticationPrincipal SecurityAccount securityAccount,
+            @Valid ContestIdxDto dto) {
+        return new ResponseEntity<>(
+                contestService.loadAllRecruit(securityAccount, dto), HttpStatus.OK);
     }
 
     // Setter

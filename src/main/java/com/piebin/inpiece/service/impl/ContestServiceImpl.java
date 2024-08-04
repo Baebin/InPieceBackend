@@ -8,6 +8,7 @@ import com.piebin.inpiece.model.domain.*;
 import com.piebin.inpiece.model.dto.contest.*;
 import com.piebin.inpiece.model.dto.image.ImageDetailDto;
 import com.piebin.inpiece.model.dto.image.ImageDto;
+import com.piebin.inpiece.model.dto.team.TeamRecruitDetailDto;
 import com.piebin.inpiece.model.dto.team_member.TeamDetailDto;
 import com.piebin.inpiece.model.entity.ContestFilter;
 import com.piebin.inpiece.model.entity.ContestSort;
@@ -116,6 +117,17 @@ public class ContestServiceImpl implements ContestService {
         List<TeamDetailDto> dtos = new ArrayList<>();
         for (TeamContest teamContest : contest.getTeamContests())
             dtos.add(TeamDetailDto.toDto(teamContest.getTeam()));
+        return dtos;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<TeamRecruitDetailDto> loadAllRecruit(SecurityAccount securityAccount, ContestIdxDto dto) {
+        Contest contest = contestRepository.findByIdx(dto.getIdx())
+                .orElseThrow(() -> new ContestException(ContestErrorCode.NOT_FOUND));
+        List<TeamRecruitDetailDto> dtos = new ArrayList<>();
+        for (TeamRecruit teamRecruit : contest.getTeamRecruits())
+            dtos.add(TeamRecruitDetailDto.toDto(teamRecruit));
         return dtos;
     }
 
