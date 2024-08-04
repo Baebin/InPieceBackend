@@ -32,6 +32,9 @@ public class Team {
     private List<TeamContest> teamContests = new ArrayList<>();
 
     @OneToMany(mappedBy = "team", cascade = CascadeType.REMOVE)
+    private List<TeamRecruit> teamRecruits = new ArrayList<>();
+
+    @OneToMany(mappedBy = "team", cascade = CascadeType.REMOVE)
     @Builder.Default
     private List<TeamMember> members = new ArrayList<>();
 
@@ -68,6 +71,13 @@ public class Team {
         for (TeamContest teamContest : teamContests)
             if (teamContest.getContest().getIdx().equals(contest.getIdx()))
                 return Optional.of(teamContest);
+        return Optional.empty();
+    }
+
+    public Optional<TeamRecruit> getTeamRecruit(Contest contest) {
+        for (TeamRecruit teamRecruit : teamRecruits)
+            if (teamRecruit.getContest().getIdx().equals(contest.getIdx()))
+                return Optional.of(teamRecruit);
         return Optional.empty();
     }
 }

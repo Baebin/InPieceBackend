@@ -37,6 +37,9 @@ public class Contest {
     private List<TeamContest> teamContests = new ArrayList<>();
 
     @OneToMany(mappedBy = "contest", cascade = CascadeType.REMOVE)
+    private List<TeamRecruit> teamRecruits = new ArrayList<>();
+
+    @OneToMany(mappedBy = "contest", cascade = CascadeType.REMOVE)
     private List<ContestRecommend> recommends = new ArrayList<>();
 
     @CreatedDate

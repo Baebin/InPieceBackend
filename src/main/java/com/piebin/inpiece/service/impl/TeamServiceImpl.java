@@ -2,9 +2,11 @@ package com.piebin.inpiece.service.impl;
 
 import com.piebin.inpiece.exception.AccountException;
 import com.piebin.inpiece.exception.ContestException;
+import com.piebin.inpiece.exception.SystemException;
 import com.piebin.inpiece.exception.TeamException;
 import com.piebin.inpiece.exception.entity.AccountErrorCode;
 import com.piebin.inpiece.exception.entity.ContestErrorCode;
+import com.piebin.inpiece.exception.entity.SystemErrorCode;
 import com.piebin.inpiece.exception.entity.TeamErrorCode;
 import com.piebin.inpiece.model.domain.*;
 import com.piebin.inpiece.model.dto.contest.ContestDetailDto;
@@ -29,6 +31,7 @@ public class TeamServiceImpl implements TeamService {
     private final ContestTeamRepository contestTeamRepository;
     private final TeamRepository teamRepository;
     private final TeamMemberRepository teamMemberRepository;
+    private final TeamRecruitRepository teamRecruitRepository;
 
     // Utility
     @Override
@@ -175,5 +178,54 @@ public class TeamServiceImpl implements TeamService {
         for (TeamContest teamContest : team.getTeamContests())
             dtos.add(ContestDetailDto.toDto(account, teamContest.getContest()));
         return dtos;
+    }
+
+    // Recruit
+    @Override
+    @Transactional(readOnly = true)
+    public TeamRecruitDetailDto loadRecruit(SecurityAccount securityAccount, TeamRecruitDto dto) {
+        Account account = securityAccount.getAccount();
+        Team team = teamRepository.findByIdx(dto.getTeamIdx())
+                .orElseThrow(() -> new TeamException(TeamErrorCode.NOT_FOUND));
+        Contest contest = contestRepository.findByIdx(dto.getContestIdx())
+                .orElseThrow(() -> new ContestException(ContestErrorCode.NOT_FOUND));
+        TeamRecruit teamRecruit = team.getTeamRecruit(contest)
+                .orElseThrow(() -> new SystemException(SystemErrorCode.DATA_NOT_FOUND));
+        return TeamRecruitDetailDto.toDto(teamRecruit);
+    }
+
+    @Override
+    @Transactional
+    public void updateRecruit(SecurityAccount securityAccount, TeamRecruitEditDto dto) {
+        Account account = securityAccount.getAccount();
+        Team team = teamRepository.findByIdx(dto.getTeamIdx())
+                .orElseThrow(() -> new TeamException(TeamErrorCode.NOT_FOUND));
+        if (!team.isOwner(account))
+            throw new TeamException(TeamErrorCode.IS_NON_OWNER);
+
+        Contest contest = contestRepository.findByIdx(dto.getContestIdx())
+                .orElseThrow(() -> new ContestException(ContestErrorCode.NOT_FOUND));
+        if (!team.containsContest(contest))
+            throw new ContestException(ContestErrorCode.NOT_FOUND);
+
+        Optional<TeamRecruit> optionalTeamRecruit = teamRecruitRepository.findByTeamAndContest(team, contest);
+        if (optionalTeamRecruit.isPresent()) {
+            TeamRecruit teamRecruit = optionalTeamRecruit.get();
+            teamRecruit.setPosition(dto.getPosition());
+            teamRecruit.setRole(dto.getRole());
+            teamRecruit.setQualification(dto.getQualification());
+            teamRecruit.setSpecial(dto.getSpecial());
+        } else {
+            TeamRecruit teamRecruit = TeamRecruit.builder()
+                    .team(team)
+                    .contest(contest)
+
+                    .position(dto.getPosition())
+                    .role(dto.getRole())
+                    .qualification(dto.getQualification())
+                    .special(dto.getSpecial())
+                    .build();
+            teamRecruitRepository.save(teamRecruit);
+        }
     }
 }

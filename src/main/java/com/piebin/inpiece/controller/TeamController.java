@@ -95,4 +95,21 @@ public class TeamController {
         return new ResponseEntity<>(
                 teamService.loadAllContest(securityAccount, dto), HttpStatus.OK);
     }
+
+    // Recruit
+    @GetMapping(API + "load/recruit")
+    public ResponseEntity<TeamRecruitDetailDto> loadRecruit(
+            @AuthenticationPrincipal SecurityAccount securityAccount,
+            @Valid TeamRecruitDto dto) {
+        return new ResponseEntity<>(
+                teamService.loadRecruit(securityAccount, dto), HttpStatus.OK);
+    }
+
+    @PostMapping(API + "update/recruit")
+    public ResponseEntity<Boolean> updateRecruit(
+            @AuthenticationPrincipal SecurityAccount securityAccount,
+            @RequestBody @Valid TeamRecruitEditDto dto) {
+        teamService.updateRecruit(securityAccount, dto);
+        return ResponseEntity.ok(true);
+    }
 }

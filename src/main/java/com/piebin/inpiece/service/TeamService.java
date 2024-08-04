@@ -1,7 +1,6 @@
 package com.piebin.inpiece.service;
 
 import com.piebin.inpiece.model.dto.contest.ContestDetailDto;
-import com.piebin.inpiece.model.dto.contest.ContestIdxDto;
 import com.piebin.inpiece.model.dto.team.*;
 import com.piebin.inpiece.model.dto.team_member.TeamMemberDetailDto;
 import com.piebin.inpiece.security.SecurityAccount;
@@ -26,4 +25,8 @@ public interface TeamService {
     void removeContest(SecurityAccount securityAccount, TeamContestDto dto);
 
     List<ContestDetailDto> loadAllContest(SecurityAccount securityAccount, TeamIdxDto dto);
+
+    // Recruit
+    TeamRecruitDetailDto loadRecruit(SecurityAccount securityAccount, TeamRecruitDto dto);
+    void updateRecruit(SecurityAccount securityAccount, TeamRecruitEditDto dto);
 }
