@@ -71,15 +71,18 @@ public class TeamProjectServiceImpl implements TeamProjectService {
     @Override
     @Transactional
     public TeamProjectDetailDto load(SecurityAccount securityAccount, TeamProjectIdxDto dto) {
+        Account account = (securityAccount != null ? securityAccount.getAccount() : null);
         TeamProject teamProject = teamProjectRepository.findByIdx(dto.getIdx())
                 .orElseThrow(() -> new TeamException(TeamErrorCode.PROJECT_NOT_FOUND));
         teamProject.setViewCount(teamProject.getViewCount() + 1);
-        return TeamProjectDetailDto.toDto(teamProject);
+        return TeamProjectDetailDto.toDto(account, teamProject);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<TeamProjectDetailDto> loadAll(SecurityAccount securityAccount, String filter, String sort, int page, int count) {
+        Account account = (securityAccount != null ? securityAccount.getAccount() : null);
+
         List<TeamProject> projects;
         PageRequest pageRequest = PageRequest.of(page, count);
 
@@ -102,10 +105,9 @@ public class TeamProjectServiceImpl implements TeamProjectService {
         }
         List<TeamProjectDetailDto> dtos = new ArrayList<>();
         for (TeamProject project : projects)
-            dtos.add(TeamProjectDetailDto.toDto(project));
+            dtos.add(TeamProjectDetailDto.toDto(account, project));
         return dtos;
     }
-
 
     // Setter
     @Override

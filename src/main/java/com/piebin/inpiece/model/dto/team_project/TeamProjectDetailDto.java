@@ -38,6 +38,12 @@ public class TeamProjectDetailDto {
     private String qualification;
     private String special;
 
+    private Boolean recommend;
+    @JsonProperty("rec_count")
+    private Long recCount;
+    @JsonProperty("view_count")
+    private Long viewCount;
+
     @JsonFormat(pattern = "yyyy.MM.dd HH:mm")
     @JsonProperty("reg_date")
     private LocalDateTime regDate;
@@ -45,7 +51,7 @@ public class TeamProjectDetailDto {
     @JsonProperty("end_date")
     private LocalDateTime endDate;
 
-    public static TeamProjectDetailDto toDto(TeamProject teamProject) {
+    public static TeamProjectDetailDto toDto(Account account, TeamProject teamProject) {
         Team team = teamProject.getTeam();
         Account owner = team.getOwner();
         return TeamProjectDetailDto.builder()
@@ -63,6 +69,10 @@ public class TeamProjectDetailDto {
                 .role(teamProject.getRole())
                 .qualification(teamProject.getQualification())
                 .special(teamProject.getSpecial())
+
+                .recommend(account != null ? teamProject.getRecommend(account).isPresent() : false)
+                .recCount((long) teamProject.getRecommends().size())
+                .viewCount(teamProject.getViewCount())
 
                 .regDate(teamProject.getRegDate())
                 .endDate(teamProject.getEndDate())
