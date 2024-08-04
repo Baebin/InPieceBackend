@@ -11,6 +11,7 @@ import com.piebin.inpiece.exception.entity.TeamErrorCode;
 import com.piebin.inpiece.model.domain.*;
 import com.piebin.inpiece.model.dto.contest.ContestDetailDto;
 import com.piebin.inpiece.model.dto.team.*;
+import com.piebin.inpiece.model.dto.team_member.TeamDetailDto;
 import com.piebin.inpiece.model.dto.team_member.TeamMemberDetailDto;
 import com.piebin.inpiece.repository.*;
 import com.piebin.inpiece.security.SecurityAccount;
@@ -104,6 +105,14 @@ public class TeamServiceImpl implements TeamService {
     }
 
     // Getter
+    @Override
+    @Transactional(readOnly = true)
+    public TeamDetailDto load(SecurityAccount securityAccount, TeamIdxDto dto) {
+        Team team = teamRepository.findByIdx(dto.getIdx())
+                .orElseThrow(() -> new TeamException(TeamErrorCode.NOT_FOUND));
+        return TeamDetailDto.toDto(team);
+    }
+
     @Override
     @Transactional(readOnly = true)
     public List<TeamMemberDetailDto> loadAllMyTeam(SecurityAccount securityAccount) {

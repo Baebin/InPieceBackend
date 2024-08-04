@@ -41,7 +41,7 @@ public class ContestController {
     }
 
     @GetMapping(API + "load/detail")
-    public ResponseEntity<ContestDetailDto> loadDetail(
+    public ResponseEntity<ContestDetailDto> load(
             @AuthenticationPrincipal SecurityAccount securityAccount,
             @Valid ContestIdxDto dto) {
         return new ResponseEntity<>(

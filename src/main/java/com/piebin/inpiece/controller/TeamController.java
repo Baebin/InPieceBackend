@@ -2,6 +2,7 @@ package com.piebin.inpiece.controller;
 
 import com.piebin.inpiece.model.dto.contest.ContestDetailDto;
 import com.piebin.inpiece.model.dto.team.*;
+import com.piebin.inpiece.model.dto.team_member.TeamDetailDto;
 import com.piebin.inpiece.model.dto.team_member.TeamMemberDetailDto;
 import com.piebin.inpiece.security.SecurityAccount;
 import com.piebin.inpiece.service.TeamService;
@@ -31,7 +32,7 @@ public class TeamController {
     }
 
     @DeleteMapping(API + "delete")
-    public ResponseEntity<Boolean> create(
+    public ResponseEntity<Boolean> delete(
             @AuthenticationPrincipal SecurityAccount securityAccount,
             @RequestBody @Valid TeamIdxDto dto) {
         teamService.delete(securityAccount, dto);
@@ -55,6 +56,14 @@ public class TeamController {
     }
 
     // Getter
+    @GetMapping(API + "load")
+    public ResponseEntity<TeamDetailDto> load(
+            @AuthenticationPrincipal SecurityAccount securityAccount,
+            @Valid TeamIdxDto dto) {
+        return new ResponseEntity<>(
+                teamService.load(securityAccount, dto), HttpStatus.OK);
+    }
+
     @GetMapping(API + "load/all/my")
     public ResponseEntity<List<TeamMemberDetailDto>> loadAllMyTeam(
             @AuthenticationPrincipal SecurityAccount securityAccount) {
