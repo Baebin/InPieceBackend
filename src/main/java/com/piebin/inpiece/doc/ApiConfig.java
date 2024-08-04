@@ -54,4 +54,20 @@ public class ApiConfig {
                 .pathsToMatch("/api/team/**")
                 .build();
     }
+
+    @Bean
+    public GroupedOpenApi teamRecruitAPI() {
+        return GroupedOpenApi.builder()
+                .group("Team Recruit API")
+                .pathsToMatch("/api/team/recruit/**")
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi teamProjectAPI() {
+        return GroupedOpenApi.builder()
+                .group("Team Project API")
+                .pathsToMatch("/api/team/project/**")
+                .build();
+    }
 }
