@@ -55,6 +55,16 @@ public class ContestServiceImpl implements ContestService {
 
     // Getter
     @Override
+    @Transactional
+    public ContestDetailDto load(SecurityAccount securityAccount, ContestIdxDto dto) {
+        Account account = (securityAccount != null ? securityAccount.getAccount() : null);
+        Contest contest = contestRepository.findByIdx(dto.getIdx())
+                .orElseThrow(() -> new ContestException(ContestErrorCode.NOT_FOUND));
+        contest.setViewCount(contest.getViewCount() + 1);
+        return ContestDetailDto.toDto(account, contest);
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public ResponseEntity<byte[]> loadImage(SecurityAccount securityAccount, ContestIdxDto dto) throws IOException {
         Contest contest = contestRepository.findByIdx(dto.getIdx())
@@ -68,15 +78,6 @@ public class ContestServiceImpl implements ContestService {
 
     @Override
     @Transactional(readOnly = true)
-    public ContestDetailDto load(SecurityAccount securityAccount, ContestIdxDto dto) {
-        Account account = (securityAccount != null ? securityAccount.getAccount() : null);
-        Contest contest = contestRepository.findByIdx(dto.getIdx())
-                .orElseThrow(() -> new ContestException(ContestErrorCode.NOT_FOUND));
-        return ContestDetailDto.toDto(account, contest);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
     public List<ContestDetailDto> loadAll(SecurityAccount securityAccount, String filter, String sort, int page, int count) {
         Account account = (securityAccount != null ? securityAccount.getAccount() : null);
 
@@ -85,10 +86,17 @@ public class ContestServiceImpl implements ContestService {
 
         // Default : REG_DATE, DESC
         if (filter.equalsIgnoreCase(ContestFilter.REC_COUNT.name())) {
+            // REC_COUNT
             if (sort.equalsIgnoreCase(ContestSort.ASC.name()))
                 contests = contestRepository.findAllByOrderByRecommendsAsc(pageRequest);
             else contests = contestRepository.findAllByOrderByRecommendsDesc(pageRequest);
+        } else if (filter.equalsIgnoreCase(ContestFilter.VIEW_COUNT.name())) {
+            // VIEW_COUNT
+            if (sort.equalsIgnoreCase(ContestSort.ASC.name()))
+                contests = contestRepository.findAllByOrderByViewCountAsc(pageRequest);
+            else contests = contestRepository.findAllByOrderByViewCountDesc(pageRequest);
         } else {
+            // REG_DATE
             if (sort.equalsIgnoreCase(ContestSort.ASC.name()))
                 contests = contestRepository.findAllByOrderByRegDateAsc(pageRequest);
             else contests = contestRepository.findAllByOrderByRegDateDesc(pageRequest);

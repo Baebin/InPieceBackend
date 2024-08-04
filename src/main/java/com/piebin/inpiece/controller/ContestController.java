@@ -33,19 +33,19 @@ public class ContestController {
     }
 
     // Getter
-    @GetMapping(API + "load/image")
-    public ResponseEntity<byte[]> loadImage(
-            @AuthenticationPrincipal SecurityAccount securityAccount,
-            @Valid ContestIdxDto dto) throws IOException {
-        return contestService.loadImage(securityAccount,dto);
-    }
-
-    @GetMapping(API + "load/detail")
+    @GetMapping(API + "load")
     public ResponseEntity<ContestDetailDto> load(
             @AuthenticationPrincipal SecurityAccount securityAccount,
             @Valid ContestIdxDto dto) {
         return new ResponseEntity<>(
                 contestService.load(securityAccount, dto), HttpStatus.OK);
+    }
+
+    @GetMapping(API + "load/image")
+    public ResponseEntity<byte[]> loadImage(
+            @AuthenticationPrincipal SecurityAccount securityAccount,
+            @Valid ContestIdxDto dto) throws IOException {
+        return contestService.loadImage(securityAccount,dto);
     }
 
     @GetMapping(API + "load/all")

@@ -28,6 +28,8 @@ public class ContestDetailDto {
     private Boolean recommend;
     @JsonProperty("rec_count")
     private Long recCount;
+    @JsonProperty("view_count")
+    private Long viewCount;
 
     @JsonFormat(pattern = "yyyy.MM.dd HH:mm")
     @JsonProperty("reg_date")
@@ -50,6 +52,7 @@ public class ContestDetailDto {
 
                 .recommend(account != null ? contest.getRecommend(account).isPresent() : false)
                 .recCount((long) contest.getRecommends().size())
+                .viewCount(contest.getViewCount())
 
                 .regDate(contest.getRegDate())
                 .startDate(contest.getStartDate())

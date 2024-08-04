@@ -20,9 +20,9 @@ public interface ContestService {
     void editRecommend(SecurityAccount securityAccount, ContestRecommendDto dto);
 
     // Getter
-    ResponseEntity<byte[]> loadImage(SecurityAccount securityAccount, ContestIdxDto dto) throws IOException;
-
     ContestDetailDto load(SecurityAccount securityAccount, ContestIdxDto dto);
+
+    ResponseEntity<byte[]> loadImage(SecurityAccount securityAccount, ContestIdxDto dto) throws IOException;
     List<ContestDetailDto> loadAll(SecurityAccount securityAccount, String filter, String sort, int page, int count);
     List<ContestDetailDto> loadAllMyContest(SecurityAccount securityAccount);
     List<TeamDetailDto> loadAllTeam(SecurityAccount securityAccount, ContestIdxDto dto);

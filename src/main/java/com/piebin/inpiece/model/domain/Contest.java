@@ -1,5 +1,6 @@
 package com.piebin.inpiece.model.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -23,7 +24,6 @@ public class Contest {
     private Long idx;
 
     private String name;
-
     private String description;
 
     @Builder.Default
@@ -41,6 +41,10 @@ public class Contest {
 
     @OneToMany(mappedBy = "contest", cascade = CascadeType.REMOVE)
     private List<ContestRecommend> recommends = new ArrayList<>();
+
+    @JsonProperty("view_count")
+    @Builder.Default
+    private Long viewCount = 0L;
 
     @CreatedDate
     @Column(name = "reg_date")

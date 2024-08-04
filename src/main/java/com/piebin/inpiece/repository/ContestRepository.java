@@ -22,4 +22,6 @@ public interface ContestRepository extends JpaRepository<Contest, Long> {
     List<Contest> findAllByOrderByRecommendsAsc(PageRequest pageRequest);
     @Query(value = "select contest from Contest contest order by (select count(*) from contest.recommends) desc, contest.regDate desc")
     List<Contest> findAllByOrderByRecommendsDesc(PageRequest pageRequest);
+    List<Contest> findAllByOrderByViewCountAsc(PageRequest pageRequest);
+    List<Contest> findAllByOrderByViewCountDesc(PageRequest pageRequest);
 }
