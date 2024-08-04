@@ -246,8 +246,6 @@ public class TeamServiceImpl implements TeamService {
 
         Contest contest = contestRepository.findByIdx(dto.getContestIdx())
                 .orElseThrow(() -> new ContestException(ContestErrorCode.NOT_FOUND));
-        if (!team.containsContest(contest))
-            throw new ContestException(ContestErrorCode.NOT_FOUND);
 
         Optional<TeamRecruit> optionalTeamRecruit = teamRecruitRepository.findByTeamAndContest(team, contest);
         if (optionalTeamRecruit.isPresent()) {
