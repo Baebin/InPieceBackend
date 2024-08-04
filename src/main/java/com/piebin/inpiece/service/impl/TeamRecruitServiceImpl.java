@@ -105,9 +105,9 @@ public class TeamRecruitServiceImpl implements TeamRecruitService {
                 .orElseThrow(() -> new TeamException(TeamErrorCode.NOT_FOUND));
         Contest contest = contestRepository.findByIdx(dto.getContestIdx())
                 .orElseThrow(() -> new ContestException(ContestErrorCode.NOT_FOUND));
-        TeamContest teamContest = team.getTeamContest(contest)
+        TeamRecruit teamRecruit = team.getTeamRecruit(contest)
                 .orElseThrow(() -> new SystemException(SystemErrorCode.DATA_NOT_FOUND));
-        String path = "team/recruit/" + teamContest.getIdx();
+        String path = "team/" + team.getIdx() + "/recruit/" + teamRecruit.getIdx();
         String name = "form";
         FileDto fileDto = FileDto.builder().path(path).name(name).build();
         FileDetailDto fileDetailDto = fileService.download(fileDto);
@@ -125,10 +125,10 @@ public class TeamRecruitServiceImpl implements TeamRecruitService {
 
         Contest contest = contestRepository.findByIdx(dto.getContestIdx())
                 .orElseThrow(() -> new ContestException(ContestErrorCode.NOT_FOUND));
-        TeamContest teamContest = team.getTeamContest(contest)
+        TeamRecruit teamRecruit = team.getTeamRecruit(contest)
                 .orElseThrow(() -> new SystemException(SystemErrorCode.DATA_NOT_FOUND));
 
-        String path = "team/recruit/" + teamContest.getIdx();
+        String path = "team/" + team.getIdx() + "/recruit/" + teamRecruit.getIdx();
         String name = "form";
         FileDto fileDto = FileDto.builder().path(path).name(name).build();
         fileService.upload(file, fileDto);

@@ -9,7 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -70,6 +72,23 @@ public class TeamProjectController {
             @AuthenticationPrincipal SecurityAccount securityAccount,
             @RequestBody @Valid TeamProjectRecommendDto dto) {
         teamProjectService.editRecommend(securityAccount, dto);
+        return ResponseEntity.ok(true);
+    }
+
+    // File
+    @GetMapping(API + "load/form")
+    public ResponseEntity<byte[]> loadForm(
+            @AuthenticationPrincipal SecurityAccount securityAccount,
+            @Valid TeamProjectIdxDto dto) throws IOException {
+        return teamProjectService.loadForm(securityAccount, dto);
+    }
+
+    @PostMapping(API + "upload/form")
+    public ResponseEntity<Boolean> uploadForm(
+            @AuthenticationPrincipal SecurityAccount securityAccount,
+            @RequestPart(value = "file") MultipartFile file,
+            @RequestPart(value = "dto") TeamProjectIdxDto dto) throws IOException {
+        teamProjectService.uploadForm(securityAccount, file, dto);
         return ResponseEntity.ok(true);
     }
 }

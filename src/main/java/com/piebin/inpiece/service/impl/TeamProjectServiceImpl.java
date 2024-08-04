@@ -3,6 +3,8 @@ package com.piebin.inpiece.service.impl;
 import com.piebin.inpiece.exception.TeamException;
 import com.piebin.inpiece.exception.entity.TeamErrorCode;
 import com.piebin.inpiece.model.domain.*;
+import com.piebin.inpiece.model.dto.file.FileDetailDto;
+import com.piebin.inpiece.model.dto.file.FileDto;
 import com.piebin.inpiece.model.dto.team_project.*;
 import com.piebin.inpiece.model.entity.SearchFilter;
 import com.piebin.inpiece.model.entity.SearchSort;
@@ -10,12 +12,16 @@ import com.piebin.inpiece.repository.TeamProjectRecommendRepository;
 import com.piebin.inpiece.repository.TeamProjectRepository;
 import com.piebin.inpiece.repository.TeamRepository;
 import com.piebin.inpiece.security.SecurityAccount;
+import com.piebin.inpiece.service.FileService;
 import com.piebin.inpiece.service.TeamProjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +32,8 @@ public class TeamProjectServiceImpl implements TeamProjectService {
     private final TeamRepository teamRepository;
     private final TeamProjectRepository teamProjectRepository;
     private final TeamProjectRecommendRepository teamProjectRecommendRepository;
+
+    private final FileService fileService;
 
     // Utility
     @Override
@@ -153,5 +161,35 @@ public class TeamProjectServiceImpl implements TeamProjectService {
                 return;
             teamProjectRecommendRepository.delete(optionalRecommend.get());
         }
+    }
+
+    // File
+    @Override
+    @Transactional(readOnly = true)
+    public ResponseEntity<byte[]> loadForm(SecurityAccount securityAccount, TeamProjectIdxDto dto) throws IOException {
+        TeamProject teamProject = teamProjectRepository.findByIdx(dto.getIdx())
+                .orElseThrow(() -> new TeamException(TeamErrorCode.PROJECT_NOT_FOUND));
+        Team team = teamProject.getTeam();
+        String path = "team/" + team.getIdx() + "/project/" + teamProject.getIdx();
+        String name = "form";
+        FileDto fileDto = FileDto.builder().path(path).name(name).build();
+        FileDetailDto fileDetailDto = fileService.download(fileDto);
+        return FileDetailDto.toResponseEntity(fileDetailDto);
+    }
+
+    @Override
+    @Transactional
+    public void uploadForm(SecurityAccount securityAccount, MultipartFile file, TeamProjectIdxDto dto) throws IOException {
+        Account account = securityAccount.getAccount();
+        TeamProject teamProject = teamProjectRepository.findByIdx(dto.getIdx())
+                .orElseThrow(() -> new TeamException(TeamErrorCode.PROJECT_NOT_FOUND));
+        Team team = teamProject.getTeam();
+        if (!team.isOwner(account))
+            throw new TeamException(TeamErrorCode.IS_NON_OWNER);
+
+        String path = "team/" + team.getIdx() + "/project/" + teamProject.getIdx();
+        String name = "form";
+        FileDto fileDto = FileDto.builder().path(path).name(name).build();
+        fileService.upload(file, fileDto);
     }
 }
