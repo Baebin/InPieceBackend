@@ -2,7 +2,10 @@ package com.piebin.inpiece.model.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -31,4 +34,8 @@ public class TeamRecruit {
     private String qualification;
 
     private String special;
+
+    @CreatedDate
+    @Column(name = "reg_date")
+    private LocalDateTime regDate;
 }
