@@ -40,7 +40,7 @@ public class TeamProject {
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> categories = new ArrayList<>();
 
-    @OneToMany(mappedBy = "team_project", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "teamProject", cascade = CascadeType.REMOVE)
     private List<TeamProjectRecommend> recommends = new ArrayList<>();
 
     @JsonProperty("view_count")
