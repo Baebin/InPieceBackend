@@ -15,7 +15,7 @@ import java.io.IOException;
 @Component
 @RequiredArgsConstructor
 public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
-    private static final String REDIRECT_URI = "http://localhost:5173/";
+    private static final String REDIRECT_URI = "http://inpiece.kro.kr/";
 
     private final TokenProvider tokenProvider;
 
