@@ -1,5 +1,5 @@
 package com.piebin.inpiece.model.entity;
 
-public enum ContestSort {
+public enum SearchSort {
     ASC, DESC
 }

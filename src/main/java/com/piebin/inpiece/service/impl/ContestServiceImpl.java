@@ -10,8 +10,8 @@ import com.piebin.inpiece.model.dto.image.ImageDetailDto;
 import com.piebin.inpiece.model.dto.image.ImageDto;
 import com.piebin.inpiece.model.dto.team_recruit.TeamRecruitDetailDto;
 import com.piebin.inpiece.model.dto.team.TeamDetailDto;
-import com.piebin.inpiece.model.entity.ContestFilter;
-import com.piebin.inpiece.model.entity.ContestSort;
+import com.piebin.inpiece.model.entity.SearchFilter;
+import com.piebin.inpiece.model.entity.SearchSort;
 import com.piebin.inpiece.repository.ContestRecCountRepository;
 import com.piebin.inpiece.repository.ContestRepository;
 import com.piebin.inpiece.security.SecurityAccount;
@@ -85,19 +85,19 @@ public class ContestServiceImpl implements ContestService {
         PageRequest pageRequest = PageRequest.of(page, count);
 
         // Default : REG_DATE, DESC
-        if (filter.equalsIgnoreCase(ContestFilter.REC_COUNT.name())) {
+        if (filter.equalsIgnoreCase(SearchFilter.REC_COUNT.name())) {
             // REC_COUNT
-            if (sort.equalsIgnoreCase(ContestSort.ASC.name()))
+            if (sort.equalsIgnoreCase(SearchSort.ASC.name()))
                 contests = contestRepository.findAllByOrderByRecommendsAsc(pageRequest);
             else contests = contestRepository.findAllByOrderByRecommendsDesc(pageRequest);
-        } else if (filter.equalsIgnoreCase(ContestFilter.VIEW_COUNT.name())) {
+        } else if (filter.equalsIgnoreCase(SearchFilter.VIEW_COUNT.name())) {
             // VIEW_COUNT
-            if (sort.equalsIgnoreCase(ContestSort.ASC.name()))
-                contests = contestRepository.findAllByOrderByViewCountAsc(pageRequest);
-            else contests = contestRepository.findAllByOrderByViewCountDesc(pageRequest);
+            if (sort.equalsIgnoreCase(SearchSort.ASC.name()))
+                contests = contestRepository.findAllByOrderByViewCountAscRegDateAsc(pageRequest);
+            else contests = contestRepository.findAllByOrderByViewCountDescRegDateDesc(pageRequest);
         } else {
             // REG_DATE
-            if (sort.equalsIgnoreCase(ContestSort.ASC.name()))
+            if (sort.equalsIgnoreCase(SearchSort.ASC.name()))
                 contests = contestRepository.findAllByOrderByRegDateAsc(pageRequest);
             else contests = contestRepository.findAllByOrderByRegDateDesc(pageRequest);
         }
