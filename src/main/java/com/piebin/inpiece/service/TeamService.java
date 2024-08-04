@@ -5,7 +5,10 @@ import com.piebin.inpiece.model.dto.team.*;
 import com.piebin.inpiece.model.dto.team_member.TeamDetailDto;
 import com.piebin.inpiece.model.dto.team_member.TeamMemberDetailDto;
 import com.piebin.inpiece.security.SecurityAccount;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface TeamService {
@@ -32,4 +35,8 @@ public interface TeamService {
     TeamRecruitDetailDto loadRecruit(SecurityAccount securityAccount, TeamRecruitDto dto);
     List<TeamRecruitDetailDto> loadAllRecruit(SecurityAccount securityAccount, TeamIdxDto dto);
     void updateRecruit(SecurityAccount securityAccount, TeamRecruitEditDto dto);
+
+    // Recruit Form
+    ResponseEntity<byte[]> loadRecruitForm(SecurityAccount securityAccount, TeamRecruitDto dto) throws IOException;
+    void uploadRecruitForm(SecurityAccount securityAccount, MultipartFile file, TeamRecruitDto dto) throws IOException;
 }
