@@ -17,6 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ContestDetailDto {
+    private Long idx;
     private String name;
     private String description;
     private List<String> tags;
@@ -40,6 +41,7 @@ public class ContestDetailDto {
 
     public static ContestDetailDto toDto(Account account, Contest contest) {
         return ContestDetailDto.builder()
+                .idx(contest.getIdx())
                 .name(contest.getName())
                 .description(contest.getDescription())
                 .tags(contest.getTags())
