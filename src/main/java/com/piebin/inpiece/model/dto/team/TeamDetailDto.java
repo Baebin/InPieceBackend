@@ -1,4 +1,4 @@
-package com.piebin.inpiece.model.dto.team_member;
+package com.piebin.inpiece.model.dto.team;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;

@@ -1,4 +1,4 @@
-package com.piebin.inpiece.model.dto.team;
+package com.piebin.inpiece.model.dto.team_member;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;

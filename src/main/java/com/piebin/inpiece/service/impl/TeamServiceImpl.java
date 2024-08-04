@@ -13,8 +13,11 @@ import com.piebin.inpiece.model.dto.contest.ContestDetailDto;
 import com.piebin.inpiece.model.dto.file.FileDetailDto;
 import com.piebin.inpiece.model.dto.file.FileDto;
 import com.piebin.inpiece.model.dto.team.*;
-import com.piebin.inpiece.model.dto.team_member.TeamDetailDto;
-import com.piebin.inpiece.model.dto.team_member.TeamMemberDetailDto;
+import com.piebin.inpiece.model.dto.team.TeamDetailDto;
+import com.piebin.inpiece.model.dto.team_member.TeamMemberDto;
+import com.piebin.inpiece.model.dto.team_recruit.TeamRecruitDetailDto;
+import com.piebin.inpiece.model.dto.team_recruit.TeamRecruitDto;
+import com.piebin.inpiece.model.dto.team_recruit.TeamRecruitEditDto;
 import com.piebin.inpiece.repository.*;
 import com.piebin.inpiece.security.SecurityAccount;
 import com.piebin.inpiece.service.FileService;
@@ -123,12 +126,23 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<TeamMemberDetailDto> loadAllMyTeam(SecurityAccount securityAccount) {
+    public List<TeamDetailDto> loadAllMyTeam(SecurityAccount securityAccount) {
         Account account = securityAccount.getAccount();
 
-        List<TeamMemberDetailDto> dtos = new ArrayList<>();
+        List<TeamDetailDto> dtos = new ArrayList<>();
         for (TeamMember teamMember : teamMemberRepository.findAllByAccountOrderByIdxDesc(account))
-            dtos.add(TeamMemberDetailDto.toDto(teamMember));
+            dtos.add(TeamDetailDto.toDto(teamMember.getTeam()));
+        return dtos;
+    }
+
+    @Override
+    @Transactional
+    public List<TeamDetailDto> loadAllMyOwnTeam(SecurityAccount securityAccount) {
+        Account account = securityAccount.getAccount();
+
+        List<TeamDetailDto> dtos = new ArrayList<>();
+        for (Team team : teamRepository.findAllByOwnerOrderByIdxDesc(account))
+            dtos.add(TeamDetailDto.toDto(team));
         return dtos;
     }
 

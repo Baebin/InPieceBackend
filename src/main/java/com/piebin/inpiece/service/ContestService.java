@@ -1,8 +1,8 @@
 package com.piebin.inpiece.service;
 
 import com.piebin.inpiece.model.dto.contest.*;
-import com.piebin.inpiece.model.dto.team.TeamRecruitDetailDto;
-import com.piebin.inpiece.model.dto.team_member.TeamDetailDto;
+import com.piebin.inpiece.model.dto.team_recruit.TeamRecruitDetailDto;
+import com.piebin.inpiece.model.dto.team.TeamDetailDto;
 import com.piebin.inpiece.security.SecurityAccount;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;

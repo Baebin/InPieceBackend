@@ -2,8 +2,11 @@ package com.piebin.inpiece.controller;
 
 import com.piebin.inpiece.model.dto.contest.ContestDetailDto;
 import com.piebin.inpiece.model.dto.team.*;
-import com.piebin.inpiece.model.dto.team_member.TeamDetailDto;
-import com.piebin.inpiece.model.dto.team_member.TeamMemberDetailDto;
+import com.piebin.inpiece.model.dto.team.TeamDetailDto;
+import com.piebin.inpiece.model.dto.team_member.TeamMemberDto;
+import com.piebin.inpiece.model.dto.team_recruit.TeamRecruitDetailDto;
+import com.piebin.inpiece.model.dto.team_recruit.TeamRecruitDto;
+import com.piebin.inpiece.model.dto.team_recruit.TeamRecruitEditDto;
 import com.piebin.inpiece.security.SecurityAccount;
 import com.piebin.inpiece.service.TeamService;
 import jakarta.validation.Valid;
@@ -67,10 +70,17 @@ public class TeamController {
     }
 
     @GetMapping(API + "load/all/my")
-    public ResponseEntity<List<TeamMemberDetailDto>> loadAllMyTeam(
+    public ResponseEntity<List<TeamDetailDto>> loadAllMyTeam(
             @AuthenticationPrincipal SecurityAccount securityAccount) {
         return new ResponseEntity<>(
                 teamService.loadAllMyTeam(securityAccount), HttpStatus.OK);
+    }
+
+    @GetMapping(API + "load/all/my/own")
+    public ResponseEntity<List<TeamDetailDto>> loadAllMyOwnTeam(
+            @AuthenticationPrincipal SecurityAccount securityAccount) {
+        return new ResponseEntity<>(
+                teamService.loadAllMyOwnTeam(securityAccount), HttpStatus.OK);
     }
 
     // Setter

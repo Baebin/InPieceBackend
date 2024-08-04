@@ -2,8 +2,11 @@ package com.piebin.inpiece.service;
 
 import com.piebin.inpiece.model.dto.contest.ContestDetailDto;
 import com.piebin.inpiece.model.dto.team.*;
-import com.piebin.inpiece.model.dto.team_member.TeamDetailDto;
-import com.piebin.inpiece.model.dto.team_member.TeamMemberDetailDto;
+import com.piebin.inpiece.model.dto.team.TeamDetailDto;
+import com.piebin.inpiece.model.dto.team_member.TeamMemberDto;
+import com.piebin.inpiece.model.dto.team_recruit.TeamRecruitDetailDto;
+import com.piebin.inpiece.model.dto.team_recruit.TeamRecruitDto;
+import com.piebin.inpiece.model.dto.team_recruit.TeamRecruitEditDto;
 import com.piebin.inpiece.security.SecurityAccount;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,7 +23,8 @@ public interface TeamService {
 
     // Getter
     TeamDetailDto load(SecurityAccount securityAccount, TeamIdxDto dto);
-    List<TeamMemberDetailDto> loadAllMyTeam(SecurityAccount securityAccount);
+    List<TeamDetailDto> loadAllMyTeam(SecurityAccount securityAccount);
+    List<TeamDetailDto> loadAllMyOwnTeam(SecurityAccount securityAccount);
 
     // Setter
     void editName(SecurityAccount securityAccount, TeamNameDto dto);
