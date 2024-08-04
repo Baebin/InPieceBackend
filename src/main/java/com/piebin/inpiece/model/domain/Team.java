@@ -29,14 +29,17 @@ public class Team {
     private Account owner;
 
     @OneToMany(mappedBy = "team", cascade = CascadeType.REMOVE)
+    @Builder.Default
+    private List<TeamMember> members = new ArrayList<>();
+
+    @OneToMany(mappedBy = "team", cascade = CascadeType.REMOVE)
     private List<TeamContest> teamContests = new ArrayList<>();
 
     @OneToMany(mappedBy = "team", cascade = CascadeType.REMOVE)
     private List<TeamRecruit> teamRecruits = new ArrayList<>();
 
     @OneToMany(mappedBy = "team", cascade = CascadeType.REMOVE)
-    @Builder.Default
-    private List<TeamMember> members = new ArrayList<>();
+    private List<TeamProject> teamProjects = new ArrayList<>();
 
     @CreatedDate
     @Column(name = "reg_date")

@@ -12,7 +12,9 @@ public enum TeamErrorCode {
     IS_OWNER(HttpStatus.CONFLICT, "팀 소유주입니다."),
     IS_MEMBER(HttpStatus.CONFLICT, "이미 팀 멤버입니다."),
     IS_NON_OWNER(HttpStatus.BAD_REQUEST, "팀 소유주가 아닙니다."),
-    IS_NON_MEMBER(HttpStatus.BAD_REQUEST, "팀 멤버가 아닙니다.");
+    IS_NON_MEMBER(HttpStatus.BAD_REQUEST, "팀 멤버가 아닙니다."),
+
+    PROJECT_NOT_FOUND(HttpStatus.BAD_REQUEST, "일치하는 팀 프로젝트 정보가 없습니다.");
 
     private final HttpStatus httpStatus;
     private final String message;
