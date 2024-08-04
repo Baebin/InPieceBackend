@@ -47,6 +47,13 @@ dependencies {
 
     // Google OAuth
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-oauth2-client', version: '3.3.2'
+
+    // Tomcat
+    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+}
+
+jar {
+    enabled = false
 }
 
 tasks.named('test') {
